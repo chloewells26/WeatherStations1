@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 import os
+from sklearn import preprocessing
 
 # establishing directory
 BaseDir = os.path.split(os.path.split(__file__)[0])[0]
@@ -101,6 +102,7 @@ raw_data = raw_data.drop(['VelocidadVientoMax_1', 'DireccionVientoMax_1', 'Veloc
                              , 'VelocidadVientoMax_10', 'DireccionVientoMax_10', 'VelocidadVientoMax_11',
                           'DireccionVientoMax_11'], axis=1)
 
+# create a data frame with columns in the preferred order
 data = raw_data[['Día', 'TempMinAbs_1', 'TempProm_1', 'TempMaxAbs_1', 'Hum_1', 'Precipitacion_1', 'RadSolar_1',
                  'RadSolarMaxAbs_1', 'IndiceUV_1', 'IndiceUVMaxAbs_1', 'VientoX_1', 'VientoY_1',
                  'TempMinAbs_2', 'TempProm_2', 'TempMaxAbs_2', 'Hum_2', 'Precipitacion_2', 'RadSolar_2',
@@ -122,4 +124,65 @@ data = raw_data[['Día', 'TempMinAbs_1', 'TempProm_1', 'TempMaxAbs_1', 'Hum_1', 
                  'IndiceUVMaxAbs_10', 'VientoX_10', 'VientoY_10', 'TempMinAbs_11', 'TempProm_11', 'TempMaxAbs_11',
                  'Hum_11', 'Precipitacion_11', 'RadSolar_11', 'RadSolarMaxAbs_11', 'IndiceUV_11', 'IndiceUVMaxAbs_11',
                  'VientoX_11', 'VientoY_11']]
+
+# create a dataframe without dia column
+x = data[['TempMinAbs_1', 'TempProm_1', 'TempMaxAbs_1', 'Hum_1', 'Precipitacion_1', 'RadSolar_1',
+                 'RadSolarMaxAbs_1', 'IndiceUV_1', 'IndiceUVMaxAbs_1', 'VientoX_1', 'VientoY_1',
+                 'TempMinAbs_2', 'TempProm_2', 'TempMaxAbs_2', 'Hum_2', 'Precipitacion_2', 'RadSolar_2',
+                 'RadSolarMaxAbs_2', 'IndiceUV_2', 'IndiceUVMaxAbs_2', 'VientoX_2', 'VientoY_2', 'TempMinAbs_3',
+                 'TempProm_3', 'TempMaxAbs_3', 'Hum_3', 'Precipitacion_3', 'RadSolar_3', 'RadSolarMaxAbs_3',
+                 'IndiceUV_3', 'IndiceUVMaxAbs_3', 'VientoX_3', 'VientoY_3', 'TempMinAbs_4', 'TempProm_4',
+                 'TempMaxAbs_4', 'Hum_4', 'Precipitacion_4', 'RadSolar_4', 'RadSolarMaxAbs_4', 'IndiceUV_4',
+                 'IndiceUVMaxAbs_4', 'VientoX_4', 'VientoY_5', 'TempMinAbs_5', 'TempProm_5', 'TempMaxAbs_5',
+                 'Hum_5', 'Precipitacion_5', 'RadSolar_5', 'RadSolarMaxAbs_5', 'IndiceUV_5', 'IndiceUVMaxAbs_5',
+                 'VientoX_5', 'VientoY_5', 'TempMinAbs_6', 'TempProm_6', 'TempMaxAbs_6', 'Hum_6',
+                 'Precipitacion_6', 'RadSolar_6', 'RadSolarMaxAbs_6', 'IndiceUV_6', 'IndiceUVMaxAbs_6', 'VientoX_6',
+                 'VientoY_6', 'TempMinAbs_7', 'TempProm_7', 'TempMaxAbs_7', 'Hum_7', 'Precipitacion_7',
+                 'RadSolar_7', 'RadSolarMaxAbs_7', 'IndiceUV_7', 'IndiceUVMaxAbs_7', 'VientoX_7', 'VientoY_7',
+                 'TempMinAbs_8', 'TempProm_8', 'TempMaxAbs_8', 'Hum_8', 'Precipitacion_8', 'RadSolar_8',
+                 'RadSolarMaxAbs_8', 'IndiceUV_8', 'IndiceUVMaxAbs_8', 'VientoX_8', 'VientoY_8', 'TempMinAbs_9',
+                 'TempProm_9', 'TempMaxAbs_9', 'Hum_9', 'Precipitacion_9', 'RadSolar_9', 'RadSolarMaxAbs_9',
+                 'IndiceUV_9', 'IndiceUVMaxAbs_9', 'VientoX_9', 'VientoY_9', 'TempMinAbs_10', 'TempProm_10',
+                 'TempMaxAbs_10', 'Hum_10', 'Precipitacion_10', 'RadSolar_10', 'RadSolarMaxAbs_10', 'IndiceUV_10',
+                 'IndiceUVMaxAbs_10', 'VientoX_10', 'VientoY_10', 'TempMinAbs_11', 'TempProm_11', 'TempMaxAbs_11',
+                 'Hum_11', 'Precipitacion_11', 'RadSolar_11', 'RadSolarMaxAbs_11', 'IndiceUV_11', 'IndiceUVMaxAbs_11',
+                 'VientoX_11', 'VientoY_11']]
+
+
+# create an array from dataframe
+x = x.values
+
+# normalizing data by sample and reconverting into dataframe
+min_max_scaler = preprocessing.MinMaxScaler()
+x_scaled = min_max_scaler.fit_transform(x)
+
+df = pd.DataFrame(x_scaled)
+
+df1 = pd.DataFrame(df)
+'''
+df1.columns = ['TempMinAbs_1', 'TempProm_1', 'TempMaxAbs_1', 'Hum_1', 'Precipitacion_1', 'RadSolar_1',
+                 'RadSolarMaxAbs_1', 'IndiceUV_1', 'IndiceUVMaxAbs_1', 'VientoX_1', 'VientoY_1',
+                 'TempMinAbs_2', 'TempProm_2', 'TempMaxAbs_2', 'Hum_2', 'Precipitacion_2', 'RadSolar_2',
+                 'RadSolarMaxAbs_2', 'IndiceUV_2', 'IndiceUVMaxAbs_2', 'VientoX_2', 'VientoY_2', 'TempMinAbs_3',
+                 'TempProm_3', 'TempMaxAbs_3', 'Hum_3', 'Precipitacion_3', 'RadSolar_3', 'RadSolarMaxAbs_3',
+                 'IndiceUV_3', 'IndiceUVMaxAbs_3', 'VientoX_3', 'VientoY_3', 'TempMinAbs_4', 'TempProm_4',
+                 'TempMaxAbs_4', 'Hum_4', 'Precipitacion_4', 'RadSolar_4', 'RadSolarMaxAbs_4', 'IndiceUV_4',
+                 'IndiceUVMaxAbs_4', 'VientoX_4', 'VientoY_5', 'TempMinAbs_5', 'TempProm_5', 'TempMaxAbs_5',
+                 'Hum_5', 'Precipitacion_5', 'RadSolar_5', 'RadSolarMaxAbs_5', 'IndiceUV_5', 'IndiceUVMaxAbs_5',
+                 'VientoX_5', 'VientoY_5', 'TempMinAbs_6', 'TempProm_6', 'TempMaxAbs_6', 'Hum_6',
+                 'Precipitacion_6', 'RadSolar_6', 'RadSolarMaxAbs_6', 'IndiceUV_6', 'IndiceUVMaxAbs_6', 'VientoX_6',
+                 'VientoY_6', 'TempMinAbs_7', 'TempProm_7', 'TempMaxAbs_7', 'Hum_7', 'Precipitacion_7',
+                 'RadSolar_7', 'RadSolarMaxAbs_7', 'IndiceUV_7', 'IndiceUVMaxAbs_7', 'VientoX_7', 'VientoY_7',
+                 'TempMinAbs_8', 'TempProm_8', 'TempMaxAbs_8', 'Hum_8', 'Precipitacion_8', 'RadSolar_8',
+                 'RadSolarMaxAbs_8', 'IndiceUV_8', 'IndiceUVMaxAbs_8', 'VientoX_8', 'VientoY_8', 'TempMinAbs_9',
+                 'TempProm_9', 'TempMaxAbs_9', 'Hum_9', 'Precipitacion_9', 'RadSolar_9', 'RadSolarMaxAbs_9',
+                 'IndiceUV_9', 'IndiceUVMaxAbs_9', 'VientoX_9', 'VientoY_9', 'TempMinAbs_10', 'TempProm_10',
+                 'TempMaxAbs_10', 'Hum_10', 'Precipitacion_10', 'RadSolar_10', 'RadSolarMaxAbs_10', 'IndiceUV_10',
+                 'IndiceUVMaxAbs_10', 'VientoX_10', 'VientoY_10', 'TempMinAbs_11', 'TempProm_11', 'TempMaxAbs_11',
+                 'Hum_11', 'Precipitacion_11', 'RadSolar_11', 'RadSolarMaxAbs_11', 'IndiceUV_11', 'IndiceUVMaxAbs_11',
+                 'VientoX_11', 'VientoY_11']
+'''
+print(x_scaled)
+print(df)
+
 
