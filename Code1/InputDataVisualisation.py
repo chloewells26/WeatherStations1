@@ -1,41 +1,39 @@
 import matplotlib.pyplot as plt
-import pandas as pd
-import os
 import numpy as np
 import RawDataManagement as rdm
 
 # define the lines
-x1 = rdm.data['Día']
-y1 = rdm.data['TempMinAbs_1']
-y2 = rdm.data['TempMinAbs_2']
-y3 = rdm.data['TempMinAbs_3']
-y4 = rdm.data['TempMinAbs_4']
-y5 = rdm.data['TempMinAbs_5']
-y6 = rdm.data['TempMinAbs_6']
-y7 = rdm.data['TempMinAbs_7']
-y8 = rdm.data['TempMinAbs_8']
-y9 = rdm.data['TempMinAbs_9']
-y10 = rdm.data['TempMinAbs_10']
-y11 = rdm.data['TempMinAbs_11']
+x1 = rdm.raw_data['Día']
+y1 = rdm.df1['TempMinAbs_1']
+y2 = rdm.df1['TempProm_1']
+y3 = rdm.df1['TempMaxAbs_1']
+y4 = rdm.df1['Hum_1']
+y5 = rdm.df1['Precipitacion_1']
+y6 = rdm.df1['RadSolar_1']
+y7 = rdm.df1['RadSolarMaxAbs_1']
+y8 = rdm.df1['IndiceUV_1']
+y9 = rdm.df1['IndiceUVMaxAbs_1']
+y10 = rdm.df1['VientoX_1']
+y11 = rdm.df1['VientoY_1']
 
 # plotting the lines
-plt.plot(x1, y1, label='Barreneche', alpha=0.5)
-plt.plot(x1, y2, label='El Tablon', alpha=0.5)
-plt.plot(x1, y3, label='Finca Santa Victoria', alpha=0.5)
-plt.plot(x1, y4, label='Los Saminez', alpha=0.5)
-plt.plot(x1, y5, label='Pamesebal', alpha=0.5)
-plt.plot(x1, y6, label='Panajachel', alpha=0.5)
-plt.plot(x1, y7, label='San Jose Chacaya', alpha=0.5)
-plt.plot(x1, y8, label='San Juan la Laguna', alpha=0.5)
-plt.plot(x1, y9, label='San Lucas Toliman', alpha=0.5)
-plt.plot(x1, y10, label='Santa Lucia Utatlan', alpha=0.5)
-plt.plot(x1, y11, label='Santiago Atitlan', alpha=0.5)
+plt.plot(x1, y1, label='TempMinAbs_1', alpha=0.5)
+plt.plot(x1, y2, label='TempProm_1', alpha=0.5)
+plt.plot(x1, y3, label='TempMaxAbs_1', alpha=0.5)
+plt.plot(x1, y4, label='Hum_1', alpha=0.5)
+plt.plot(x1, y5, label='Precipitacion_1', alpha=0.5)
+plt.plot(x1, y6, label='RadSolar_1', alpha=0.5)
+plt.plot(x1, y7, label='RadSolarMaxAbs_1', alpha=0.5)
+plt.plot(x1, y8, label='IndiceUV_1', alpha=0.5)
+plt.plot(x1, y9, label='IndiceUVMaxAbs_1', alpha=0.5)
+plt.plot(x1, y10, label='VientoX_1', alpha=0.5)
+plt.plot(x1, y11, label='VientoY_1', alpha=0.5)
 # label x axis
 plt.xlabel('Día')
 plt.xticks(rotation=45)
 plt.xticks(np.arange(0, len(x1)+1, 110))
 # label y axis
-plt.ylabel('Temp Min Abs (\u00b0C)')
+plt.ylabel('Barreneche')
 # Set a title of the current axes.
 plt.title('TempMinAbs')
 # show a legend on the plot
