@@ -157,4 +157,4 @@ df1.columns = ['TempMinAbs_1', 'TempProm_1', 'TempMaxAbs_1', 'Hum_1', 'Precipita
                  'VientoX_11', 'VientoY_11']
 
 
-print(df1)
+print(raw_data['Día'])

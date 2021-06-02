@@ -13,9 +13,9 @@ def pearson_selection(feature_name):
     print(signif)
 
 
-pearson_selection('Hum_1')
+pearson_selection('TempMinAbs_1')
 
-
+'''
 def boruta_selection(feature_name):
     df2 = rdm.df1
     X = df2.drop([feature_name], axis=1)
@@ -40,7 +40,7 @@ def boruta_selection(feature_name):
 
 boruta_selection('TempMinAbs_1')
 
-'''
+
 
 def show_heatmap(data):
     plt.matshow(rdm.df1.corr())
