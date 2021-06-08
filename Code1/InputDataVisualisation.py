@@ -18,6 +18,7 @@ y11 = rdm.df1['VientoY_1']
 
 # plotting the lines
 plt.plot(x1, y1, label='TempMinAbs_1', alpha=0.5)
+'''
 plt.plot(x1, y2, label='TempProm_1', alpha=0.5)
 plt.plot(x1, y3, label='TempMaxAbs_1', alpha=0.5)
 plt.plot(x1, y4, label='Hum_1', alpha=0.5)
@@ -28,6 +29,7 @@ plt.plot(x1, y8, label='IndiceUV_1', alpha=0.5)
 plt.plot(x1, y9, label='IndiceUVMaxAbs_1', alpha=0.5)
 plt.plot(x1, y10, label='VientoX_1', alpha=0.5)
 plt.plot(x1, y11, label='VientoY_1', alpha=0.5)
+'''
 # label x axis
 plt.xlabel('Día')
 plt.xticks(rotation=45)
