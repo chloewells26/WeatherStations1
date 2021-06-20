@@ -72,6 +72,8 @@ out = model.predict(X_in, verbose=2)
 print(out)
 
 
+
+
 observed = X_in[:, :, 0]
 predicted = out.reshape(out.shape[1])
 observed = observed.reshape(observed.shape[1])
