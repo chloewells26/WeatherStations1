@@ -7,6 +7,8 @@ from RawDataManagement import df1
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Dense
+from sklearn.model_selection import train_test_split
+
 
 
 # features selected in feature selection file, has to be rewritten to use that output as input, headers arent maintained
@@ -17,6 +19,7 @@ print("The selected parameters are: TempMinAbs_1, TempProm_1, TempMinAbs_2, Temp
 
 target = df1[['TempMinAbs_1']]
 target.columns = ['TempMinAbs_1']
+target = target.to_numpy()
 
 features = df1[['TempMinAbs_1', 'TempProm_1', 'TempMinAbs_2', 'TempMinAbs_3', 'TempProm_3', 'TempMinAbs_4',
                 'TempProm_4', 'TempMinAbs_5', 'TempMinAbs_7', 'TempProm_7', 'TempMinAbs_8', 'TempProm_8',
@@ -28,6 +31,82 @@ features.columns = ['TempMinAbs_1', 'TempProm_1', 'TempMinAbs_2', 'TempMinAbs_3'
                     'TempProm_4', 'TempMinAbs_5', 'TempMinAbs_7', 'TempProm_7', 'TempMinAbs_8', 'TempProm_8',
                     'TempMinAbs_9','TempMinAbs_10', 'TempProm_10']
 features = features.fillna(-1)
+features = features.to_numpy()
+
+# Split data into train and test to verify accuracy after fitting the model.
+X_train, X_test, y_train, y_test = train_test_split(features, target, test_size=0.25, random_state=42)
+
+# set batch size
+batch_size = 1
+
+# reshape input to be [time steps, samples, features] from [time steps, features]
+X_train = X_train.reshape(batch_size, X_train.shape[0], X_train.shape[1])
+X_test = X_test.reshape(batch_size, X_test.shape[0], X_test.shape[1])
+y_train = y_train.reshape(batch_size, y_train.shape[0], y_train.shape[1])
+y_test = y_test.reshape(batch_size, y_test.shape[0], y_test.shape[1])
+
+
+
+# define the LSTM architecture
+model = Sequential()
+model.add(LSTM(64, activation='relu', input_shape=(X_train.shape[1], X_train.shape[2])))
+model.add(Dense(32))
+model.add(Dense(1))
+model.compile(optimizer='adam', loss='mse')
+print(model.summary())
+
+
+# store fitting in history variable
+history = model.fit(X_train, y_train, verbose=2, epochs=30, batch_size=batch_size,
+                    validation_data=(X_test, y_test))
+
+'''
+# Predict *this is where code stops working
+
+_, acc = model.evaluate(X_test, y_test)
+print("Accuracy = ", (acc * 100.0), "%")
+
+
+
+
+#plot the training and validation accuracy and loss at each epoch
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.plot(epochs, loss, 'y', label='Training loss')
+plt.plot(epochs, val_loss, 'r', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
+
+acc = history.history['accuracy']
+val_acc = history.history['val_accuracy']
+plt.plot(epochs, acc, 'y', label='Training acc')
+plt.plot(epochs, val_acc, 'r', label='Validation acc')
+plt.title('Training and validation accuracy')
+plt.xlabel('Epochs')
+plt.ylabel('Accuracy')
+plt.legend()
+plt.show()
+
+# from keras.models import load_model
+# saved_model = load_model('models/best_model.h5')
+
+# Predicting the Test set results
+y_pred = model.predict(X_test)
+
+
+
+
+
+
+# print(X_test.shape)  723,15
+# print(X_train.shape) 2169, 15
+# print(y_test.shape) 723, 1
+# print(y_train.shape) 2169, 1
 
 
 n_features = len(features.columns)
@@ -93,3 +172,4 @@ plt.title('Temp Min Abs Barreneche')
 # Display a figure.
 plt.show()
 
+'''
