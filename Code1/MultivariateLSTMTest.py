@@ -1,37 +1,46 @@
-import pandas as pd
-import tensorflow
-from tensorflow import keras
 import numpy as np
-import matplotlib.pyplot as plt
-from RawDataManagement import df1
-from RawDataManagement import df2
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import LSTM
 from tensorflow.keras.layers import Dense, Dropout
-from sklearn.model_selection import train_test_split
+import pandas as pd
+from matplotlib import pyplot as plt
 from sklearn.preprocessing import StandardScaler
 import seaborn as sns
+# from datetime import datetime
+import os
+
+# establishing directory
+BaseDir = os.path.split(os.path.split(__file__)[0])[0]
+
+# load data, converts csv into pandas dataframe
+df = pd.read_csv(BaseDir + '/Data/GE.csv')
+
 
 # Separate dates for future plotting
-train_dates = pd.to_datetime(df2['Día'])
+train_dates = pd.to_datetime(df['Date'])
 
 # Variables for training
-cols = list(df2[['TempMinAbs_1', 'TempProm_1', 'TempMinAbs_2', 'TempMinAbs_3', 'TempProm_3', 'TempMinAbs_4',
-                'TempProm_4', 'TempMinAbs_5', 'TempMinAbs_7', 'TempProm_7', 'TempMinAbs_8', 'TempProm_8',
-                'TempMinAbs_9', 'TempMinAbs_10', 'TempProm_10']])
+cols = list(df)[1:6]
 
-df_for_training = df2[cols].astype(float)
+df_for_training = df[cols].astype(float)
+
+print(df_for_training)
+print(df_for_training.shape)
+
+
+
+# df_for_plot=df_for_training.tail(5000)
+# df_for_plot.plot.line()
 
 # LSTM uses sigmoid and tanh that are sensitive to magnitude so values need to be normalized
-# normalize the dataset *standard scaler converts to array for some reason? dont want to fill NaN values before scaling
+# normalize the dataset
 scaler = StandardScaler()
 scaler = scaler.fit(df_for_training)
 df_for_training_scaled = scaler.transform(df_for_training)
+print(type(df_for_training))
+print(type(df_for_training_scaled))
 
-df3 = pd.DataFrame(df_for_training_scaled)
-df3 = df3.fillna(2)
-df_for_training_scaled = df3.to_numpy()
-
+quit()
 
 # As required for LSTM networks, we require to reshape an input data into n_samples x timesteps x n_features.
 # In this example, the n_features is 2. We will make timesteps = 3.
@@ -87,15 +96,13 @@ forecast_dates = []
 for time_i in forecast_period_dates:
     forecast_dates.append(time_i.date())
 
-df_forecast = pd.DataFrame({'Día': np.array(forecast_dates), 'TempMinAbs_1': y_pred_future})
-df_forecast['Día'] = pd.to_datetime(df_forecast['Día'])
+df_forecast = pd.DataFrame({'Date': np.array(forecast_dates), 'Open': y_pred_future})
+df_forecast['Date'] = pd.to_datetime(df_forecast['Date'])
 
-original = df2[['Día', 'TempMinAbs_1']]
-original['Día'] = pd.to_datetime(original['Día'])
-original = original.loc[original['Día'] >= '10/5/2016']
+original = df[['Date', 'Open']]
+original['Date'] = pd.to_datetime(original['Date'])
+original = original.loc[original['Date'] >= '2020-5-1']
 
-sns.lineplot(original['Día'], original['TempMinAbs_1'])
-sns.lineplot(df_forecast['Día'], df_forecast['TempMinAbs_1'])
+sns.lineplot(original['Date'], original['Open'])
+sns.lineplot(df_forecast['Date'], df_forecast['Open'])
 plt.show()
-
-
