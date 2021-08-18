@@ -56,14 +56,14 @@ print('trainY shape == {}.'.format(trainY.shape))
 model = Sequential()
 model.add(LSTM(64, activation='relu', input_shape=(trainX.shape[1], trainX.shape[2]), return_sequences=True))
 model.add(LSTM(32, activation='relu', return_sequences=False))
-model.add(Dropout(0.2))
+model.add(Dropout(0.3))
 model.add(Dense(trainY.shape[1]))
 
 model.compile(optimizer='adam', loss='mse')
 model.summary()
 
 # fit model
-history = model.fit(trainX, trainY, epochs=10, batch_size=16, validation_split=0.1, verbose=1)
+history = model.fit(trainX, trainY, epochs=25, batch_size=16, validation_split=0.2, verbose=1)
 
 # plt.plot(history.history['loss'], label='Training loss')
 # plt.plot(history.history['val_loss'], label='Validation loss')
@@ -97,5 +97,18 @@ original = original.loc[original['Día'] >= '10/5/2016']
 sns.lineplot(original['Día'], original['TempMinAbs_1'])
 sns.lineplot(df_forecast['Día'], df_forecast['TempMinAbs_1'])
 plt.show()
+
+
+loss = history.history['loss']
+val_loss = history.history['val_loss']
+epochs = range(1, len(loss) + 1)
+plt.plot(epochs, loss, 'y', label='Training loss')
+plt.plot(epochs, val_loss, 'r', label='Validation loss')
+plt.title('Training and validation loss')
+plt.xlabel('Epochs')
+plt.ylabel('Loss')
+plt.legend()
+plt.show()
+
 
 
